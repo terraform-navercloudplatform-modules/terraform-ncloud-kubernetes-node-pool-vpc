@@ -49,45 +49,32 @@ resource "ncloud_login_key" "login_key" {
 }
 
 resource "ncloud_nks_cluster" "cluster" {
-  hypervisor_code        = "KVM"
-  cluster_type           = "SVR.VNKS.STAND.C002.M008.G003"
-  login_key_name         = ncloud_login_key.login_key.key_name
-  name                   = "sample-cluster"
-  lb_private_subnet_no   = ncloud_subnet.subnet_lb.id
-  lb_public_subnet_no    = ncloud_subnet.subnet_lb_pub.id
-  kube_network_plugin    = "cilium"
-  subnet_no_list         = [ ncloud_subnet.subnet.id ]
-  vpc_no                 = ncloud_vpc.vpc.id
-  public_network         = false
-  zone                   = "KR-1"
+  hypervisor_code      = "KVM"
+  cluster_type         = "SVR.VNKS.STAND.C002.M008.G003"
+  login_key_name       = ncloud_login_key.login_key.key_name
+  name                 = "sample-cluster"
+  lb_private_subnet_no = ncloud_subnet.subnet_lb.id
+  lb_public_subnet_no  = ncloud_subnet.subnet_lb_pub.id
+  kube_network_plugin  = "cilium"
+  subnet_no_list       = [ncloud_subnet.subnet.id]
+  vpc_no               = ncloud_vpc.vpc.id
+  public_network       = false
+  zone                 = "KR-1"
 
 }
 
 module "kubernetes-node-pool-vpc" {
-  source  = "../"
-    cluster_uuid     = ncloud_nks_cluster.cluster.uuid
+  source           = "terraform-navercloudplatform-modules/kubernetes-node-pool-vpc/ncloud"
+  version          = "1.0.0"
+  cluster_uuid     = ncloud_nks_cluster.cluster.uuid
   node_pool_name   = "sample-node-pool"
   node_count       = 2
   software_code    = data.ncloud_nks_server_images.image.images[0].value
   server_spec_code = data.ncloud_nks_server_products.product.products.0.value
-  storage_size = 200
+  storage_size     = 200
   autoscale = {
     enabled = false
-    min = 2
-    max = 2
+    min     = 2
+    max     = 2
   }
 }
-
-# resource "ncloud_nks_node_pool" "node_pool" {
-#   cluster_uuid     = ncloud_nks_cluster.cluster.uuid
-#   node_pool_name   = "sample-node-pool"
-#   node_count       = 2
-#   software_code    = data.ncloud_nks_server_images.image.images[0].value
-#   server_spec_code = data.ncloud_nks_server_products.product.products.0.value
-#   storage_size = 200
-#   autoscale {
-#     enabled = false
-#     min = 2
-#     max = 2
-#   }
-# }

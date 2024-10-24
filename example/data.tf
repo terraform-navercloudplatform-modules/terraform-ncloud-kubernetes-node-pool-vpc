@@ -1,25 +1,25 @@
-data "ncloud_nks_server_images" "image"{
+data "ncloud_nks_server_images" "image" {
   hypervisor_code = "KVM"
   filter {
-    name = "label"
+    name   = "label"
     values = ["ubuntu-22.04"]
-    regex = true
+    regex  = true
   }
 }
 
-data "ncloud_nks_server_products" "product"{
+data "ncloud_nks_server_products" "product" {
   software_code = data.ncloud_nks_server_images.image.images[0].value
-  zone = "KR-1"
+  zone          = "KR-1"
   filter {
-    name = "product_type"
-    values = [ "STAND"]
+    name   = "product_type"
+    values = ["STAND"]
   }
   filter {
-    name = "cpu_count"
-    values = [ "2"]
+    name   = "cpu_count"
+    values = ["2"]
   }
   filter {
-    name = "memory_size"
-    values = [ "8GB" ]
+    name   = "memory_size"
+    values = ["8GB"]
   }
 }
