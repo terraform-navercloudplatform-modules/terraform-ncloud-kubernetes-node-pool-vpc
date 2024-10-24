@@ -9,14 +9,27 @@ variable "cluster_uuid" {
 }
 
 variable "node_count" {
-  description = "(Required) Number of nodes."
+  description = "(Optional) Number of nodes. Required when autoscale is disabled."
   type        = number
+  default     = null
 }
 
 variable "product_code" {
   description = "(Optional) Product code. Required for XEN/RHV cluster nodepool."
   type        = string
   default     = null
+}
+
+variable "server_spec_code" {
+  description = "(Optional) Server spec code. Required for KVM cluster nodepool."
+  type        = string
+  default     = null
+}
+
+variable "storage_size" {
+  description = "(Optional) Default storage size for KVM nodepool. Default is 100GB."
+  type        = number
+  default     = 100
 }
 
 variable "software_code" {
@@ -37,7 +50,31 @@ variable "autoscale" {
     max     = number
     min     = number
   })
-  default = null
+  default = {
+    enabled = false
+    max     = null
+    min     = null
+  }
+  validation {
+    condition     = !(var.autoscale.enabled == true && (var.autoscale.max == null || var.autoscale.min == null))
+    error_message = "Auto scaling is enabled, but max and min must be set."
+  }
+  validation {
+    condition     = !(var.autoscale.enabled == true && var.autoscale.max < var.autoscale.min)
+    error_message = "Auto scaling is enabled, but max cannot be less than min."
+  }
+}
+
+variable "subnet_no_list" {
+  description = "(Optional) Subnet no list."
+  type        = list(string)
+  default     = null
+}
+
+variable "k8s_version" {
+  description = "(Optional) Kubernetes version. Only upgrade is supported."
+  type        = string
+  default     = null
 }
 
 variable "label" {

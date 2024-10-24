@@ -15,40 +15,40 @@ output "nodes" {
 
 output "name" {
   description = "The name of Server instance."
-  value       = ncloud_nks_node_pool.nks_node_pool.name
+  value       = ncloud_nks_node_pool.nks_node_pool.nodes[*].name
 }
 
-output "instance_no" {
+output "node_instance_no" {
   description = "The ID of server instance."
-  value       = ncloud_nks_node_pool.nks_node_pool.instance_no
+  value       = ncloud_nks_node_pool.nks_node_pool.nodes[*].instance_no
 }
 
-output "spec" {
+output "node_spec" {
   description = "Server spec."
-  value       = ncloud_nks_node_pool.nks_node_pool.spec
+  value       = ncloud_nks_node_pool.nks_node_pool.nodes[*].spec
 }
 
-output "private_ip" {
+output "node_private_ip" {
   description = "Private IP."
-  value       = ncloud_nks_node_pool.nks_node_pool.private_ip
+  value       = ncloud_nks_node_pool.nks_node_pool.nodes[*].private_ip
 }
 
-output "public_ip" {
+output "node_public_ip" {
   description = "Public IP."
-  value       = ncloud_nks_node_pool.nks_node_pool.public_ip
+  value       = ncloud_nks_node_pool.nks_node_pool.nodes[*].public_ip
 }
 
 output "node_status" {
   description = "Node Status."
-  value       = ncloud_nks_node_pool.nks_node_pool.node_status
+  value       = ncloud_nks_node_pool.nks_node_pool.nodes[*].node_status
 }
 
-output "container_version" {
+output "node_container_version" {
   description = "Container version of node."
-  value       = ncloud_nks_node_pool.nks_node_pool.container_version
+  value       = ncloud_nks_node_pool.nks_node_pool.nodes[*].container_version
 }
 
-output "kernel_version" {
-  description = "kernel version of node."
-  value       = ncloud_nks_node_pool.nks_node_pool.kernel_version
+output "node_kernel_version" {
+  description = "Kernel version of node."
+  value       = ncloud_nks_node_pool.nks_node_pool.nodes[*].kernel_version
 }
